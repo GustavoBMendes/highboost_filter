@@ -34,11 +34,11 @@ c = np.uint8(np.floor(c))
 cv2.imshow('mascara', c)
 
 sub = copia - c
-subcopia = np.array(sub, dtype=np.uint8)
-cv2.imshow('sub', subcopia)
 
-add = copia + (4*sub)
-add = np.array(add, dtype=np.uint8)
+add = copia + (2*sub)                                                                                                                                                               
+add = np.real(add)
+add = np.clip(add, 0, 255)
+add = np.uint8(np.floor(add))
 cv2.imshow('add', add)
 
 cv2.waitKey(0)

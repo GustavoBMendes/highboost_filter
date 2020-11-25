@@ -13,10 +13,22 @@ peso_mascara = tam_mascara * tam_mascara
 
 mascara = np.arange(peso_mascara, dtype=float)
 mascara = mascara.reshape(tam_mascara, tam_mascara)
-mascara[::1, ::1] = 1/peso_mascara
+#mascara[::1, ::1] = 1/peso_mascara
 
 index_mascara = tam_mascara/2
 index_mascara = int(index_mascara)
+
+a = np.arange(-index_mascara, index_mascara + 1)
+b = np.arange(-index_mascara, index_mascara + 1)
+a, b = np.meshgrid(b, a)
+
+d0 = 10
+
+mascara = np.exp(-((a**2) + (b**2))/(2*d0**2))/peso_mascara
+
+#mascara = np.real(mascara)
+#mascara = np.clip(mascara, 0, 255)
+#mascara = np.uint8(np.floor(mascara))
 
 copia2 = np.array(imagem, dtype=float)
 copia = np.array(imagem, dtype=float)
@@ -48,10 +60,9 @@ borrada = np.array(copia, dtype=np.uint8)
 cv2.imshow('Imagem borrada', borrada) 
 
 sub = copia2[::1, ::1] - copia[::1, ::1]
-sub2 = np.array(sub, dtype=np.uint8)
 cv2.imshow('Imagem subtraida', sub)
 
-add = copia2 + (4*sub)
+add = copia2 + (2*sub)
 add = np.real(add)
 add = np.clip(add, 0, 255)
 add = np.uint8(np.floor(add))
