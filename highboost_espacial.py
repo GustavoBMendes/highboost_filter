@@ -4,31 +4,27 @@ from argparse import ArgumentParser
 
 imagem = cv2.imread('0340.TIF', 0)
 cv2.imshow('Imagem original', imagem)
+cv2.imwrite('original.jpg', imagem)
 
 print("Altura: %d pixels" % (imagem.shape[0]))
 print("Largura: %d pixels" % (imagem.shape[1]))
 
-tam_mascara = 5#int(input("Entre com o tamanho da mascara: "))
+tam_mascara = 5		#int(input("Entre com o tamanho da mascara: "))
 peso_mascara = tam_mascara * tam_mascara
 
 mascara = np.arange(peso_mascara, dtype=float)
 mascara = mascara.reshape(tam_mascara, tam_mascara)
-#mascara[::1, ::1] = 1/peso_mascara
 
 index_mascara = tam_mascara/2
 index_mascara = int(index_mascara)
 
-a = np.arange(-index_mascara, index_mascara + 1)
-b = np.arange(-index_mascara, index_mascara + 1)
-a, b = np.meshgrid(b, a)
+x = np.arange(-index_mascara, index_mascara + 1)
+y = np.arange(-index_mascara, index_mascara + 1)
+x, y = np.meshgrid(y, x)
 
-d0 = 10
+d0 = 20
 
-mascara = np.exp(-((a**2) + (b**2))/(2*d0**2))/peso_mascara
-
-#mascara = np.real(mascara)
-#mascara = np.clip(mascara, 0, 255)
-#mascara = np.uint8(np.floor(mascara))
+mascara = np.exp(-((x**2) + (y**2))/(2*d0**2))/peso_mascara
 
 copia2 = np.array(imagem, dtype=float)
 copia = np.array(imagem, dtype=float)
@@ -62,11 +58,12 @@ cv2.imshow('Imagem borrada', borrada)
 sub = copia2[::1, ::1] - copia[::1, ::1]
 cv2.imshow('Imagem subtraida', sub)
 
-add = copia2 + (2*sub)
-add = np.real(add)
-add = np.clip(add, 0, 255)
-add = np.uint8(np.floor(add))
+nitida = copia2 + (2*sub)
+nitida = np.real(nitida)
+nitida = np.clip(nitida, 0, 255)
+nitida = np.uint8(np.floor(nitida))
 
-cv2.imshow('Imagem adicionada', add)
+cv2.imshow('Imagem adicionada', nitida)
+cv2.imwrite('hb_espacial.jpg',nitida)
 
 cv2.waitKey(0)
